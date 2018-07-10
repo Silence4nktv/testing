@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
+	<xsl:template match="products">
+		<xsl:element name="Items">
+			<xsl:for-each select="product">
+				<xsl:variable name="productId" select="@id"/>
+				<xsl:if test="$productId > 0">
+					<xsl:element name="Item">
+						<xsl:element name="sku"><xsl:value-of select="$productId"/></xsl:element>
+						<xsl:element name="name"><xsl:value-of select="@title"/></xsl:element>
+						<xsl:element name="qty"><xsl:value-of select="@stock"/></xsl:element>
+						<xsl:element name="weight"><xsl:value-of select="@weight"/></xsl:element>
+						<xsl:element name="created_at"><xsl:value-of select="@added"/></xsl:element>
+						<xsl:element name="updated_at"><xsl:value-of select="@added"/></xsl:element>
+						<xsl:element name="price"><xsl:value-of select="@price"/></xsl:element>
+						<xsl:element name="cost"><xsl:value-of select="@price"/></xsl:element>
+						<xsl:element name="barcode"><xsl:value-of select="@barcode"/></xsl:element>
+						<xsl:element name="categories">
+							<xsl:text>Default Category/Shop/</xsl:text><xsl:value-of select="@cat"/>
+							<xsl:if test="@subcat">
+								<xsl:text>|</xsl:text>
+								<xsl:text>Default Category/Shop/</xsl:text><xsl:value-of select="@cat"/>
+								<xsl:text>/</xsl:text><xsl:value-of select="@subcat"/>
+							</xsl:if>
+						</xsl:element>
+						<xsl:element name="product_type"><xsl:text>simple</xsl:text></xsl:element>
+						<xsl:choose>
+							<xsl:when test="@status = 'act'">
+								<xsl:element name="product_online">1</xsl:element>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:element name="product_online">0</xsl:element>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:element name="product_websites"><xsl:text>base</xsl:text></xsl:element>
+						<xsl:if test="@imagecount > 0">
+							<xsl:element name="base_image"><xsl:text>http://vrdistribution.com.au/extraimages/</xsl:text><xsl:value-of select="$productId"/><xsl:text>_1.jpg</xsl:text></xsl:element>
+							<xsl:element name="small_image"><xsl:text>http://vrdistribution.com.au/extraimages/</xsl:text><xsl:value-of select="$productId"/><xsl:text>_1.jpg</xsl:text></xsl:element>
+							<xsl:element name="thumbnail_image"><xsl:text>http://vrdistribution.com.au/extraimages/</xsl:text><xsl:value-of select="$productId"/><xsl:text>_1.jpg</xsl:text></xsl:element>
+						</xsl:if>
+						<xsl:element name="attribute_set_code"><xsl:text>Default</xsl:text></xsl:element>
+						<xsl:element name="description"><xsl:value-of select="description"/></xsl:element>
+					</xsl:element>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+</xsl:stylesheet>
